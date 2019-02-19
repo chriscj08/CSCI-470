@@ -38,26 +38,31 @@ public class MileRedeemer
   
   public void readDestinations(Scanner fileScanner)
   {   
-    Destination tempDest = new Destination();
+    String inputLine = "";
     
-    while (fileScanner.hasNext())
+    while (fileScanner.hasNextLine())
     {
-      fileScanner.useDelimiter(";");
+      Destination tempDest = new Destination();
+      inputLine = fileScanner.nextLine();
+       
+      String[] splitLine = inputLine.split(";");
       
-      tempDest.setDestination(fileScanner.next());
-      tempDest.setNormalMiles(Integer.parseInt(fileScanner.next()));
-      tempDest.setFrequentMiles(Integer.parseInt(fileScanner.next()));
-      tempDest.setFirstClassMiles(Integer.parseInt(fileScanner.next()));
+      tempDest.setDestination(splitLine[0]);
+      tempDest.setNormalMiles(Integer.parseInt(splitLine[1]));
+      tempDest.setFrequentMiles(Integer.parseInt(splitLine[2]));
+      tempDest.setFirstClassMiles(Integer.parseInt(splitLine[3]));
       
-      fileScanner.useDelimiter("-");
+      String[] monthSplit = splitLine[4].split("-");
       
-      tempDest.setStartMonth(Integer.parseInt(fileScanner.next()));
-      tempDest.setEndMonth(Integer.parseInt(fileScanner.next()));
+      tempDest.setStartMonth(Integer.parseInt(monthSplit[0]));
+      tempDest.setEndMonth(Integer.parseInt(monthSplit[1]));
       
+     
       flights.add(tempDest);
+  
     }
-    
-    Collections.sort(flights);
+
+      Collections.sort(flights);
   }  
   
   public ArrayList<String> getCityNames()
@@ -68,6 +73,7 @@ public class MileRedeemer
     while (i < flights.size())
     {
       cityNames.add(flights.get(i).getDestination());
+      System.out.print(flights.get(i).getDestination());
       i++;
     }
     
@@ -80,13 +86,13 @@ public class MileRedeemer
   {
     this.setRemainingMiles(miles); //Sets our remaining miles
     ArrayList<String> cities = new ArrayList<String>(); //This will hold all cities found in a descending order
-    while(cities.size() < 10) cities.add(""); //Initialize the size of the cities array to 10
+    while(cities.size() < 9) cities.add(""); //Initialize the size of the cities array to 10
     String theCity = findFurthestCity(miles, cities); //This will hold city farthest away.
     int i = 0;
        
     while (theCity != "" && i < flights.size())
     {
-      cities.add(theCity);
+      cities.set(i,theCity);
       
       compRemainingMiles(theCity, month);
       

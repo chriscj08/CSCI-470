@@ -90,7 +90,7 @@ public class Destination implements Comparable<Destination>
   
   public int compareTo(Destination anotherDest)
   {
-    return this.normalMiles - anotherDest.normalMiles;
+    return this.normalMiles > anotherDest.normalMiles ? -1 : (this.normalMiles < anotherDest.normalMiles ? 1 : 0);
   }
   
 }
