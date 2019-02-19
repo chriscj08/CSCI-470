@@ -15,12 +15,12 @@ public class MileRedeemer
   }
   
   
-  public Destination[] getFlights ();
+  public ArrayList<Destination> getFlights ()
   {
     return flights;
   }
   
-  public void setFlights(Destination[] flights)
+  public void setFlights(ArrayList<Destination> flights)
   {
     this.flights = flights; 
   }
@@ -79,26 +79,31 @@ public class MileRedeemer
   public ArrayList<String> redeemMiles(int miles, int month)
   {
     this.setRemainingMiles(miles); //Sets our remaining miles
-    ArrayList<String> cities = new ArrayList<String>; //This will hold all cities found in a descending order
-    while(cities.size() < 10) cities.add(""); //Set the size of the cities array to 10
+    ArrayList<String> cities = new ArrayList<String>(); //This will hold all cities found in a descending order
+    while(cities.size() < 10) cities.add(""); //Initialize the size of the cities array to 10
     String theCity = findFurthestCity(miles, cities); //This will hold city farthest away.
-     
-    
-    while (theCity != "" && int i < flights.size())
+    int i = 0;
+       
+    while (theCity != "" && i < flights.size())
     {
       cities.add(theCity);
       
-      compRemainingMiles(theCity, month, this.getRemainingMiles());
+      compRemainingMiles(theCity, month);
       
+      theCity = findFurthestCity(this.getRemainingMiles(), cities);
       
+      i++;
+    }
+    
+    return cities;
   }
   
   public String findFurthestCity(int miles, ArrayList<String> cities)
   { 
     for (int i = 0; i < flights.size(); i++)
     {
-      if (flights.get(i).getNormalMiles <= miles && !flights.get(i).getDestination.equals(cities.get(i)))
-        return flights.get(i).getDestination;
+      if (flights.get(i).getNormalMiles() <= miles && !flights.get(i).getDestination().equals(cities.get(i)))
+        return flights.get(i).getDestination();
     }
     
     return "";
@@ -108,7 +113,7 @@ public class MileRedeemer
   {
     for (int i = 0; i < flights.size(); i++)
     {
-      if (flights.get(i).getDestination.equals(cityName))
+      if (flights.get(i).getDestination().equals(cityName))
       {
         if (flights.get(i).getStartMonth() <= month && flights.get(i).getEndMonth() >= month)
         {
@@ -116,7 +121,7 @@ public class MileRedeemer
         }
         else
         {
-          this.remainMiles -= flights.get(i).getNormalMiles();
+          this.remainingMiles -= flights.get(i).getNormalMiles();
         }
       }
     }
