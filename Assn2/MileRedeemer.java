@@ -63,6 +63,7 @@ public class MileRedeemer
     }
 
       Collections.sort(flights);
+      
   }  
   
   public ArrayList<String> getCityNames()
@@ -73,13 +74,13 @@ public class MileRedeemer
     while (i < flights.size())
     {
       cityNames.add(flights.get(i).getDestination());
-      System.out.print(flights.get(i).getDestination());
       i++;
     }
     
     Collections.sort(cityNames);
     
     return cityNames;
+    
   }
   
   public ArrayList<String> redeemMiles(int miles, int month)
@@ -87,29 +88,45 @@ public class MileRedeemer
     this.setRemainingMiles(miles); //Sets our remaining miles
     ArrayList<String> cities = new ArrayList<String>(); //This will hold all cities found in a descending order
     while(cities.size() < 9) cities.add(""); //Initialize the size of the cities array to 10
-    String theCity = findFurthestCity(miles, cities); //This will hold city farthest away.
+    String theCity = findFurthestCity(miles, cities, month); //This will hold city farthest away.
+
     int i = 0;
        
-    while (theCity != "" && i < flights.size())
+    while (theCity != "" && i < cities.size())
     {
       cities.set(i,theCity);
       
       compRemainingMiles(theCity, month);
-      
-      theCity = findFurthestCity(this.getRemainingMiles(), cities);
+
+      theCity = findFurthestCity(this.getRemainingMiles(), cities, month);  
       
       i++;
     }
     
+    cities = compClass(cities, this.getRemainingMiles());
+    
     return cities;
   }
   
-  public String findFurthestCity(int miles, ArrayList<String> cities)
+  public String findFurthestCity(int miles, ArrayList<String> cities, int month)
   { 
     for (int i = 0; i < flights.size(); i++)
     {
-      if (flights.get(i).getNormalMiles() <= miles && !flights.get(i).getDestination().equals(cities.get(i)))
-        return flights.get(i).getDestination();
+      if (flights.get(i).getStartMonth() <= month && flights.get(i).getEndMonth() >= month)
+      {
+        if (flights.get(i).getFrequentMiles() <= miles)
+        {
+          if (!cities.contains(flights.get(i).getDestination()))
+            return flights.get(i).getDestination();
+         
+        }
+      }
+      
+      else if (flights.get(i).getNormalMiles() <= miles)
+      {
+        if (!cities.contains(flights.get(i).getDestination()))    
+          return flights.get(i).getDestination();
+      } 
     }
     
     return "";
@@ -131,5 +148,23 @@ public class MileRedeemer
         }
       }
     }
+  }
+  
+  public ArrayList<String> compClass(ArrayList<String> cities, int miles)
+  {
+    for (int i = 0; i < flights.size(); i++)
+    {
+      for(int j = 0; j < cities.size(); j++)
+      {
+        if (flights.get(i).getDestination().equals(cities.get(j)) && miles >= flights.get(i).getFirstClassMiles())
+        {
+          cities.set(j,"* A trip to " + cities.get(j) + " in first class ");
+          miles -= flights.get(i).getFrequentMiles();
+        }
+        else if (flights.get(i).getDestination().equals(cities.get(j)))
+          cities.set(j,"* A trip to " + cities.get(j) + " in economy class ");
+      }
+    }
+    return cities;
   }
 }
