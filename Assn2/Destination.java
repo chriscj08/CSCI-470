@@ -1,12 +1,26 @@
+/*
+ * Programmer: Chris Jurrens
+ * Zid: 1823592
+ * CSCI-470-Assignment2
+ * 
+ * Class: Destination
+ * 
+ * Use: This class lays down the foundation for the whole program.
+ * Each destination object represents information about a city
+ * and how it interacts with frequent flyer miles.
+ * 
+ */
+
 public class Destination implements Comparable<Destination>
 {
-  private String destination;
-  private int normalMiles;
-  private int frequentMiles;
-  private int firstClassMiles;
-  private int startMonth;
-  private int endMonth;
+  private String destination; //The city
+  private int normalMiles;    //Normal miles you have to spend frequent flyer miles on
+  private int frequentMiles;  //Represents the the discounted amount you have to spend frequent flyers miles on
+  private int firstClassMiles; //Represents the amount of frequent flyers miles needed to upgrade to first class
+  private int startMonth;     //Represents the starting month you can spend the discounted amount
+  private int endMonth;       //Represents the last month  you can spend the discounted amount
   
+  //Default constructor. 
   public Destination ()
   {
     this.destination = "";
@@ -28,16 +42,24 @@ public class Destination implements Comparable<Destination>
     this.endMonth = endMonth;
   }
   
+ /*
+  * The following methods (except the last one), are all all accessor
+  * methods. For the sake of convenience, I will document them all
+  * here. Each data member has a setter and a getter method defined
+  * below. They all function as on would expect. Setter takes an input
+  * and returns nothing. Getter return the value.
+  */
   public String getDestination()
   {
     return destination;
   }
   
+  
   public void setDestination(String destination)
   {
     this.destination = destination;
   }
-  
+
   public int getNormalMiles()
   {
     return normalMiles;
@@ -57,7 +79,7 @@ public class Destination implements Comparable<Destination>
   {
     this.frequentMiles = frequentMiles;
   }
-  
+   
   public int getFirstClassMiles()
   {
     return firstClassMiles;
@@ -78,6 +100,7 @@ public class Destination implements Comparable<Destination>
     this.startMonth = startMonth;
   }
   
+  
   public int getEndMonth()
   {
     return endMonth;
@@ -88,6 +111,7 @@ public class Destination implements Comparable<Destination>
     this.endMonth = endMonth;
   }
   
+  //This method allows us to sort collections containing Destination objects
   public int compareTo(Destination anotherDest)
   {
     return this.normalMiles > anotherDest.normalMiles ? -1 : (this.normalMiles < anotherDest.normalMiles ? 1 : 0);
