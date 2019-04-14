@@ -45,9 +45,11 @@ public class MazeAppFrame extends JFrame
     southPanel.add(openMazeBtn);
     
     solveMazeBtn = new JButton("Solve Maze");
+    solveMazeBtn.setEnabled(false);
     southPanel.add(solveMazeBtn);
     
     clearSolutionBtn = new JButton("Clear Solution");
+    clearSolutionBtn.setEnabled(false);
     southPanel.add(clearSolutionBtn);
     
     add(ourMazePanel, BorderLayout.CENTER);
@@ -86,14 +88,19 @@ public class MazeAppFrame extends JFrame
            
         }
       }
+      solveMazeBtn.setEnabled(true);
     }
     else if (e.getSource() == solveMazeBtn)
     {
-      
+      ourMazePanel.solveMaze();
+      clearSolutionBtn.setEnabled(true);
+      solveMazeBtn.setEnabled(false);
     }
     else if (e.getSource() == clearSolutionBtn)
     {
-      
+      ourMazePanel.clearMazePath();
+      solveMazeBtn.setEnabled(true);
+      clearSolutionBtn.setEnabled(false);
     }
     
     

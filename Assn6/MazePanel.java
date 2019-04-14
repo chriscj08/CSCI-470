@@ -37,6 +37,14 @@ public class MazePanel extends JPanel
     repaint();
   }
   
+  public void solveMaze()
+  {
+    this.solutionAttempted = true;
+    
+    this.solutionFound = ourMaze.solveMaze();
+    repaint();
+  }
+  
   @Override
   protected void paintComponent (Graphics g)
   {
@@ -49,16 +57,16 @@ public class MazePanel extends JPanel
     
     if (ourMaze != null)
     {
-      ourMaze.drawMaze(g, 200, 200);
+      ourMaze.drawMaze(g, 20, 20);
     }
     
     if (solutionAttempted && solutionFound)
     {
-      g.drawString("Maze solved!", 300, 300);
+      g.drawString("Maze solved!", 475, 500);
     }
     else if (solutionAttempted)
     {
-      g.drawString("No solution exists.", 300, 300);      
+      g.drawString("No solution exists.", 475, 500);      
     }
   }
   

@@ -110,26 +110,24 @@ public class Maze
     String inputLine = "";
     
     inputLine = inFile.nextLine();
-    setNumOfRows(Integer.parseInt(inputLine));
-    System.out.println(getNumOfRows());
+    setNumOfRows(Integer.parseInt(inputLine));  
     
     inputLine = inFile.nextLine();
-    System.out.println(inputLine);
     setNumOfColumns(Integer.parseInt(inputLine));
       
     theMaze = new MazeSquare[getNumOfRows()][getNumOfColumns()];
     
     while (inFile.hasNextLine())
-    {
-      inputLine = inFile.nextLine();
-      System.out.println(inputLine);
+    {     
+      
       //i here represents which row we are on
       for (int i = 0; i < getNumOfRows(); i++)
       {
+        inputLine = inFile.nextLine();
         //j here represents which column we are on
         for (int j = 0; j < getNumOfColumns(); j++)
         {
-          //System.out.println(inputLine.charAt(j));
+          
           //If pound sign, create a wall square
           if (inputLine.charAt(j) == '#')
           {
@@ -154,12 +152,13 @@ public class Maze
             
             MazeSquare tempSquare = new MazeSquare(i, j, MazeSquare.SquareType.SPACE);
             theMaze[i][j] = tempSquare;
-          }    
-        }    
-        
-        
+          }  
+          
+        }            
        }
+      
     }
+    
   }//End of readMaze()
   
   public void clearMazePath()
@@ -184,5 +183,63 @@ public class Maze
     }  
   }
   
+  public boolean solveMaze()
+  {
+   return solveMaze(getStartRow(), getStartColumn());  
+  }
+  
+  public boolean solveMaze(int row, int column)
+  {
+    if (row == getEndRow() && column == getEndColumn())
+    {
+      theMaze[row][column].setToPath();
+      return true;
+    }
+    
+    if (theMaze[row][column].getVisited() || theMaze[row][column].getType() == MazeSquare.SquareType.WALL)
+    {
+      return false;
+    }
+    
+    theMaze[row][column].markVisited();
+    
+    if (row != 0)
+    {
+      if (solveMaze(row - 1, column))
+      {
+        theMaze[row][column].setToPath();
+        return true;
+      }
+    }
+    
+    if (row != getNumOfRows()-1)
+    {
+      if (solveMaze(row + 1, column))
+      {
+        theMaze[row][column].setToPath();
+        return true;
+      }
+    }
+    
+    if (column != 0)
+    {
+      if (solveMaze(row, column - 1))
+      {
+        theMaze[row][column].setToPath();
+        return true;
+      }
+    }
+    
+    if (column != getNumOfColumns()-1)
+    {
+      if (solveMaze(row, column + 1))
+      {
+        theMaze[row][column].setToPath();
+        return true; 
+      }
+    }
+    
+    return false;
+  } 
   
 }//End of Maze class

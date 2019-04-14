@@ -34,6 +34,11 @@ public class MazeSquare
     this.visited = false;
   }
   
+  public SquareType getType()
+  {
+    return this.type;
+  }
+  
   //This method will return the square to its original look
   public void clearPath()
   {
@@ -75,12 +80,20 @@ public class MazeSquare
     }
     else if (this.type == SquareType.WALL)
     {
-      g.setColor(Color.BLUE);
+      g.setColor(Color.DARK_GRAY);
+    }
+    else if (this.type  == SquareType.PATH)
+    {
+      g.setColor(Color.RED);
     }
     
-    g.fillRect(startX + this.row, startY + this.column, (startX + this.row  + DIMENSIONS) ,
-               (startY + this.column + DIMENSIONS) );
+    g.fillRect((startX * (this.row + 1)), (startY * (this.column +1)), (startX + (this.row + 1)) ,
+               (startY + (this.column +1) ) );
     
+    g.setColor(Color.BLACK);
+    
+    g.drawRect((startX * (this.row + 1)), (startY * (this.column +1)), (startX + (this.row + 1)) ,
+               (startY + (this.column +1) ) );
   }
 }
 
